@@ -1,9 +1,6 @@
 // src/lib/sla.ts
-import { Ticket } from "@prisma/client";
+import { Ticket } from "@/generated/prisma/client";
 
-/**
- * Returns true if ticket SLA is breached
- */
 export function isSlaBreached(ticket: Ticket): boolean {
   const createdAt = new Date(ticket.createdAt).getTime();
   const now = Date.now();
