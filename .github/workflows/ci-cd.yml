@@ -15,9 +15,6 @@ jobs:
   build:
     name: Build Check
     runs-on: ubuntu-latest
-    env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      NODE_ENV: production
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,6 +29,9 @@ jobs:
         run: npm ci
 
       - name: Build app
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NODE_ENV: production
         run: npm run build
 
   docker:
