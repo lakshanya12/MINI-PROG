@@ -14,24 +14,31 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: "include", // Important: ensure cookies are sent/received
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.message);
-      return;
+      if (!res.ok) {
+        setError(data.message);
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+
+      // Force a hard redirect to ensure cookie is processed
+      window.location.href = "/dashboard";
+    } catch (err) {
+      setError("Login failed. Please try again.");
+      console.error("Login error:", err);
     }
-
-    localStorage.setItem("token", data.token);
-
-    router.push("/dashboard");  // ✅ better than window.location
   };
 
   return (

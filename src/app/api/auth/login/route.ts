@@ -35,10 +35,21 @@ export async function POST(req: NextRequest) {
       { expiresIn: "1h" }
     );
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       message: "Login successful ✅",
       token,
     });
+
+    // Set token as HTTP-only cookie for middleware
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 3600, // 1 hour
+      path: "/",
+    });
+
+    return response;
 
   } catch (error) {
     console.error(error);

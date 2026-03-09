@@ -1,54 +1,20 @@
 // ─── Dashboard Types ────────────────────────────────────────────────────────
 
-export type TicketStatus = "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
-export type Priority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-export type Role = "EMPLOYEE" | "AGENT" | "ADMIN";
-export type ApprovalStatus = "PENDING" | "APPROVED" | "REJECTED" | "ESCALATED";
+export type TicketStatus = "open" | "in_progress" | "resolved" | "closed";
+export type TicketPriority = "low" | "medium" | "high" | "critical";
+export type ApprovalStatus = "pending" | "approved" | "rejected" | "escalated";
 
 export interface Ticket {
   id: string;
   title: string;
   description: string;
   status: TicketStatus;
-  priority: Priority;
-  category: string;
-  createdById: number;
-  assignedToId: number | null;
-  slaDeadline: Date;
-  slaHours: number;
-  resolvedAt: Date | null;
+  priority: TicketPriority;
+  assignee: string;
+  reporter: string;
   createdAt: Date;
   updatedAt: Date;
-}
-
-export interface TicketDetail extends Ticket {
-  createdBy: {
-    id: number;
-    name: string;
-    email: string;
-    department?: string;
-  };
-  assignedTo: {
-    id: number;
-    name: string;
-    email: string;
-  } | null;
-  comments: TicketComment[];
-}
-
-export interface TicketComment {
-  id: number;
-  content: string;
-  message?: string;
-  ticketId: number;
-  authorId: number;
-  isInternal: boolean;
-  createdAt: Date;
-  author: {
-    id: number;
-    name: string;
-    role: Role;
-  };
+  tags: string[];
 }
 
 export interface Approval {
@@ -88,5 +54,6 @@ export interface ChartDataPoint {
   label: string;
   value: number;
   color?: string;
+
 }
 
